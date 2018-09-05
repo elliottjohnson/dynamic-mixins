@@ -14,6 +14,15 @@
               (or (class-name o) 'mixin-class)
               (mapcar #'class-name classes)))))
 
+(defclass mixin-object () ())
+(defmethod print-object ((o mixin-object) s)
+  (let ((c (class-of o)))
+    (with-slots (classes) c
+      (print-unreadable-object (o s :identity t)
+        (format s "~S ~S"
+                (or (class-name c) 'mixin-object)
+                (mapcar #'class-name classes))))))
+
 (defstruct mix-list (list nil))
 
 (defun %find-class (name-or-class)
